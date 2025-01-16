@@ -3,7 +3,7 @@
 Ce projet implémente un jeu d'échecs en JavaScript basé sur une architecture modulaire et extensible avec l'utilisation de plusieurs design patterns adaptés.
 
 
-<img src="./images/chess.png" alt="Je d'échecs" width="500"/>
+<img src="./images/chess.png" alt="Jeu d'échecs" width="500"/>
 
 
 ---
