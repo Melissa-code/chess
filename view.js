@@ -26,7 +26,7 @@ class View {
                     this.tailleCarreau,     
                     this.tailleCarreau      
                 );
-                // bordure cases 
+                // bordure de la case 
                 this.ctx.lineWidth = 1;
                 this.ctx.strokeStyle = "#e0e1dd"; 
                 this.ctx.strokeRect(

@@ -100,6 +100,18 @@ Le plateau d'échecs est représenté sous la forme d'une **matrice 8x8**, où c
 
 ### Étapes pour afficher l'échiquier :
 
-1. Créer une classe **View** pour gérer l'affichage.
-2. Utiliser un élément `<canvas>` pour dessiner l'échiquier.
-3. Définir la taille des cases en fonction de la matrice du modèle
+1. **Créer une classe `View`** :  
+   La classe `View` est responsable de la gestion de l'affichage de l'échiquier sur le canevas; 
+
+2. **Utiliser un élément `<canvas>`** :  
+   L'élément `<canvas>` est utilisé pour dessiner l'échiquier en créant un tableau de cases sur un plan 2D à l'aide de la méthode `fillRect`; 
+
+3. **Définir la taille des cases** :  
+   La taille des cases de l'échiquier est définie par la propriété `tailleCarreau` et est calculée en fonction de la matrice du modèle;
+
+4. **Affichage des cases de l'échiquier** :  
+   L'échiquier est dessiné en alternant les couleurs des cases (claires et foncées). Cela est réalisé en utilisant une boucle pour parcourir chaque ligne et colonne de la matrice et en coloriant chaque case en fonction de sa position;
+
+5. **Affichage des pièces** :  
+   Les pièces sont dessinées sur le canevas en utilisant le symbole Unicode correspondant à chaque type de pièce (pion, tour, cavalier, etc.). La couleur de chaque pièce est déterminée par sa couleur (`white` ou `black`) et elle est centrée sur la case correspondante;
+
