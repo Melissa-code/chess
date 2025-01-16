@@ -96,7 +96,10 @@ Le plateau d'échecs est représenté sous la forme d'une **matrice 8x8**, où c
 
 ---
 
+## Afficher l'échiquier
 
+### Étapes pour afficher l'échiquier :
 
-
-
+1. Créer une classe **View** pour gérer l'affichage.
+2. Utiliser un élément `<canvas>` pour dessiner l'échiquier.
+3. Définir la taille des cases en fonction de la matrice du modèle
