@@ -3,6 +3,9 @@
 Ce projet implémente un jeu d'échecs en JavaScript basé sur une architecture modulaire et extensible avec l'utilisation de plusieurs design patterns adaptés.
 
 
+<img src="./images/chess.png" alt="Je d'échecs" width="500"/>
+
+
 ---
 
 
@@ -95,6 +98,7 @@ Le plateau d'échecs est représenté sous la forme d'une **matrice 8x8**, où c
 
 
 ---
+
 
 ## Afficher l'échiquier (vide puis rempli des pièces)
 
