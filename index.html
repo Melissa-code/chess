@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Jeu d'échecs (chess) codé en JavaScript">
+        <link rel="stylesheet" href="style.css">
+        <title>Jeu d'échecs</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <!-- Alert -->
+            <div class="message"></div>
+            <!-- Title -->
+            <div class="title">
+                <h1>Jeu d'échecs</h1>
+            </div>
+            <div id="echiquier">
+                <!-- Matrix -->
+                <canvas id="myCanvas"></canvas>
+            </div>
+        </div>
+
+
+        <script src="model.js"></script>
+        <!-- <script src="vue.js"></script> -->
+
+        <script>
+
+            const pionNoir = new Pion("black");
+            document.querySelector("#echiquier").innerText = pionNoir.symbol; 
+
+        </script>
+    </body>
+</html>
