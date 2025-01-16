@@ -2,11 +2,11 @@
 
 :root {
   --white: #FFFFFF;
-  --black: #000000;
-  --green: #839788; 
-  --beige: #eee0cb;
-  --brown: #baa898;
-  --light-blue: #bfd7ea; 
+  --black: #0d1b2a;
+  --dark-blue: #1b263b; 
+  --blue: #415a77;
+  --light-blue: #778da9;
+  --light-grey: #e0e1dd; 
 
   --font: Raleway, serif;
   --fs-18: 1.125rem;
@@ -21,7 +21,7 @@
 
 body {
   font-family: var(--font);
-  background-color: var(--green);
+  background-color: var(--dark-blue);
   width: 100%;
   height: 100vh;
   display: flex;
@@ -37,3 +37,6 @@ h1 {
   margin-bottom: 3rem;
 }
 
+#myCanvas {
+  border: 1px solid var(--light-grey);
+}

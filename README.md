@@ -96,7 +96,7 @@ Le plateau d'échecs est représenté sous la forme d'une **matrice 8x8**, où c
 
 ---
 
-## Afficher l'échiquier
+## Afficher l'échiquier (vide puis rempli des pièces)
 
 ### Étapes pour afficher l'échiquier :
 
