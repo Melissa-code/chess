@@ -4,56 +4,76 @@
 
 class Piece {
 
-    constructor(color) {
+    constructor(color, i, j) {
         this.color = color;
-      }
+        this.i = i;
+        this.j = j;
+    }
+
+    canMove(echiquier, i, j) {
+        if (i < 0 || i > 7 || j < 0 || j > 7) {
+            console.log('Pièce hors de l’échiquier');
+            return false;
+        } else {
+            return true; 
+        }
+    }
 }
 
 
 class Pion extends Piece {
 
-    constructor(color) {
-        super(color);
+    constructor(color, i, j) {
+        super(color, i, j);
         this.symbol = color === "white" ? "\u2659" : "\u265F";
+    }
+
+    canMove(echiquier, i, j) {
+        if(!super.canMove(echiquier, i, j)) {
+            return false; 
+        }
+        
+        //if 
+        
     }
 }
 
 class Tour extends Piece {
 
-    constructor(color) {
-        super(color);
+    constructor(color, i, j) {
+        super(color, i, j);
         this.symbol = color === "white" ? "\u2656" : "\u265C";
     }
 }
 
 class Cavalier extends Piece {
 
-    constructor(color) {
-        super(color);
+    constructor(color, i, j) {
+        super(color, i, j);
         this.symbol = color === "white" ? "\u2658" : "\u265E";
     }
 }
 
 class Fou extends Piece {
 
-    constructor(color) {
-        super(color);
+    constructor(color, i, j) {
+        super(color, i, j);
         this.symbol = color === "white" ? "\u2657" : "\u265D";
     }
 }
 
 class Reine extends Piece {
 
-    constructor(color) {
-        super(color);
+    constructor(color, i, j) {
+        super(color, i, j);
         this.symbol = color === "white" ? "\u2655" : "\u265B";
     }
 }
 
 class Roi extends Piece {
 
-    constructor(color) {
-        super(color);
+    constructor(color, i, j) {
+        super(color, i, j);
         this.symbol = color === "white" ? "♔" : "♚";
     }
 }
@@ -64,20 +84,20 @@ class Roi extends Piece {
 
 class PieceFactory {
 
-    static createPiece(type, color) {
+    static createPiece(type, color, i, j) {
         switch(type) {
             case "pion": 
-                return new Pion(color);
+                return new Pion(color, i, j);
             case "tour": 
-                return new Tour(color); 
+                return new Tour(color, i, j); 
             case "cavalier": 
-                return new Cavalier(color); 
+                return new Cavalier(color, i, j); 
             case "fou":   
-                return new Fou(color); 
+                return new Fou(color, i, j); 
             case "reine":   
-                return new Reine(color); 
+                return new Reine(color, i, j); 
             case "roi": 
-                return new Roi(color); 
+                return new Roi(color, i, j);  
             default: 
                 console.log("Aucune pièce fabriquée"); 
                 return null; 
@@ -87,15 +107,15 @@ class PieceFactory {
 
 
 /* ************************************************************** */
-/*        Plateau jeu                                             */
+/*        Echiquier                                               */
 /* ************************************************************** */
 
 class Echiquier {
 
     constructor() {
-        this.matrice = []; 
         this.hauteur = 8; 
         this.largeur = 8; 
+        this.listePieces = []; 
         this.initGame(); 
     }
 
@@ -119,25 +139,29 @@ class Echiquier {
 
     initGame() {
         for (let i = 0; i < this.hauteur; i++) {
-            // ligne créée
-            let row = []; 
-
             for(let j = 0; j < this.largeur; j++) {
                 // 1re ligne (des blancs)
                 if (i === 0) {
-                    row.push(PieceFactory.createPiece(this.getTypeOfPiece(j), "white"));
+                    this.listePieces.push(PieceFactory.createPiece(this.getTypeOfPiece(j), "white", i , j));
                 } else if (i === 1) {
-                    row.push(PieceFactory.createPiece("pion", "white")); 
+                    this.listePieces.push(PieceFactory.createPiece("pion", "white", i, j)); 
                 } else if (i === 6) {
-                    row.push(PieceFactory.createPiece("pion", "black")); 
+                    this.listePieces.push(PieceFactory.createPiece("pion", "black", i, j)); 
                 } else if (i === 7) {
-                    row.push(PieceFactory.createPiece(this.getTypeOfPiece(j), "black"));
+                    this.listePieces.push(PieceFactory.createPiece(this.getTypeOfPiece(j), "black", i, j));
                 }
             }
-
-            // ligne remplie 
-            this.matrice.push(row);
         }
+    }
+
+    getPosition(i, j) {
+        for(let k = 0; k<this.listePieces.length; k++ ) {
+            if(this.listePieces[k].i == i && this.listePieces[k].j == j) {
+                return this.listePieces[k];
+            }
+        }
+
+        return null;
     }
 }
 
