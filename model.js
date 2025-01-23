@@ -20,6 +20,7 @@ class Piece {
     }
 }
 
+/* ********* PION ********** */
 
 class Pion extends Piece {
 
@@ -28,15 +29,52 @@ class Pion extends Piece {
         this.symbol = color === "white" ? "\u2659" : "\u265F";
     }
 
+    /**
+     * règles de déplacement du pion 
+     * @returns {boolean} 
+     */
     canMove(echiquier, i, j) {
-        if(!super.canMove(echiquier, i, j)) {
+        if (!super.canMove(echiquier, i, j)) {
             return false; 
         }
+
+        if (echiquier.isOccupied(i, j)) {
+            return false;
+        }
+
+        // Pion blanc 
+        if (this.color === "white") {
+            // Avance de 2 cases
+            if (this.i === 1 && i === 3 && this.j === j) {
+                console.log("Pion blanc avance de 2 cases")
+                return true; 
+            }
+            // Avance de 1 case
+            if (i === this.i + 1 && this.j === j) { 
+                console.log("Pion blanc avance de 1 case")
+                return true; 
+            }
+            return false;
         
-        //if 
-        
+        // Pion noir
+        } else {
+            // Avance de 2 cases
+            if (this.i === 6 && i === 4 && this.j === j) {
+                console.log("Pion noir avance de 2 cases")
+                return true; 
+            }
+            // Avance de 1 case
+            if (i === this.i - 1 && this.j === j) { 
+                console.log("Pion noir avance de 1 case")
+                return true; 
+            }
+            return false;
+        }
     }
+
 }
+
+/* ********* TOUR ********** */
 
 class Tour extends Piece {
 
@@ -46,6 +84,8 @@ class Tour extends Piece {
     }
 }
 
+/* ********* CAVALIER ********** */
+
 class Cavalier extends Piece {
 
     constructor(color, i, j) {
@@ -53,6 +93,8 @@ class Cavalier extends Piece {
         this.symbol = color === "white" ? "\u2658" : "\u265E";
     }
 }
+
+/* ********* FOU ********** */
 
 class Fou extends Piece {
 
@@ -62,6 +104,8 @@ class Fou extends Piece {
     }
 }
 
+/* ********* REINE ********** */
+
 class Reine extends Piece {
 
     constructor(color, i, j) {
@@ -69,6 +113,8 @@ class Reine extends Piece {
         this.symbol = color === "white" ? "\u2655" : "\u265B";
     }
 }
+
+/* ********* ROI ********** */
 
 class Roi extends Piece {
 
@@ -155,13 +201,35 @@ class Echiquier {
     }
 
     getPosition(i, j) {
-        for(let k = 0; k<this.listePieces.length; k++ ) {
-            if(this.listePieces[k].i == i && this.listePieces[k].j == j) {
+        for(let k = 0; k < this.listePieces.length; k++ ) {
+            if(this.listePieces[k].i === i && this.listePieces[k].j === j) {
+                console.log(`Position actuelle de la piece : ${i} ${j}`);
                 return this.listePieces[k];
             }
         }
 
         return null;
     }
-}
 
+    isOccupied(i, j) {
+        for (const piece of this.listePieces) {
+            if (piece.i === i && piece.j === j) {
+                console.log("Case occupée");
+                return true;
+            }
+        }
+        return false; 
+    }
+  
+    deplacerPiece(piece, i, j) {
+        if (piece.canMove(this, i, j)) {
+            piece.i = i; 
+            piece.j = j;
+            console.log(`Nouvelle position de la pièce: ${i} ${j}`); 
+            return true;
+        } else {
+            console.log("Déplacement impossible"); 
+            return false;
+        }
+    }
+}

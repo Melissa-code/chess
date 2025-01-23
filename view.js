@@ -43,7 +43,7 @@ class View {
         //console.log(this.echiquier.listePieces)
         for (let i = 0; i < this.echiquier.listePieces.length; i++) {
             const piece = this.echiquier.listePieces[i]; 
-            console.log(this.echiquier.listePieces[i])
+            //console.log(this.echiquier.listePieces[i])
             let x = piece.j;
             let y = piece.i; 
 

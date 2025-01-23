@@ -82,9 +82,9 @@ Elle instancie automatiquement la classe appropriée (Pion, Roi, etc.) en foncti
 ---
 
 
-## **La matrice de jeu (échiquier avec des objets)**
+## **L'échiquier avec des objets**
 
-Le plateau d'échecs est représenté sous la forme d'une **matrice 8x8**, où chaque case contient soit :
+Le plateau d'échecs est représenté sous la forme d'une **liste de pièces**, où chaque case contient soit :
 - Une référence à un objet de type **Piece** (Pion, Roi, etc.).
 - `null` si la case est vide.
 
@@ -119,3 +119,18 @@ Le plateau d'échecs est représenté sous la forme d'une **matrice 8x8**, où c
 5. **Affichage des pièces** :  
    Les pièces sont dessinées sur le canevas en utilisant le symbole Unicode correspondant à chaque type de pièce (pion, tour, cavalier, etc.). La couleur de chaque pièce est déterminée par sa couleur (`white` ou `black`) et elle est centrée sur la case correspondante;
 
+
+---
+
+
+## Déplacement des pièces 
+
+### Vérifier si la pièce ne sort pas du jeu
+
+1. Dans la classe mère, créer une méthode `canMove(echiquier, i, j)`;
+
+2. Dans la classe échiquier, vérifier que la case visée n'est pas déjà occupée `isOccupied(i, j)`;
+
+3. Dans les classes filles de Piece, vérifier la possibilité du déplacement en fonction des règles du jeu `canMove(echiquier, i, j)`;
+
+4. Dans la classe échiquier, créer une méthode `déplacerPiece(piece, i, j)`

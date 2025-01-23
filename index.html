@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Jeu d'échecs développé avec les design patterns MVC, Factory Command et Observer en JavaScript. Parfait pour les développeurs.">
+        <link rel="icon" type="image/svg" href="./images/chess1.svg" />
         <link rel="stylesheet" href="./css/normalize.css">
         <link rel="stylesheet" href="./css/style.css">
         <title>Jeu d'échecs</title>
@@ -31,6 +32,16 @@
 
             const echiquier = new Echiquier();
             const view = new View(echiquier, document, 80);
+
+            // Test deplacement d'un pion blanc
+            const pionBlanc = echiquier.getPosition(1, 0); 
+            const result = echiquier.deplacerPiece(pionBlanc, 2, 0); 
+            console.log("Test 1 pion blanc true? :", result);
+
+            // Test deplacement d'un pion noir 
+            const pionNoir = echiquier.getPosition(6, 0); 
+            const result2 = echiquier.deplacerPiece(pionNoir, 4, 0); 
+            console.log("Test 2 pion noir true? :", result);
 
         </script>
     </body>
