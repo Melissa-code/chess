@@ -38,6 +38,22 @@ class Pion extends Piece {
             return false; 
         }
 
+        // capture adversaire
+        const pieceACapturer = echiquier.getPosition(i, j);
+        if (pieceACapturer) {
+            if (pieceACapturer.color !== this.color) {
+                // supprime adversaire (nb 1)
+                const index = echiquier.listePieces.indexOf(pieceACapturer); 
+                if (index >= 0) { 
+                    echiquier.listePieces.splice(index, 1); 
+                }
+                console.log("Pièce adverse capturée par le pion")
+                return true; 
+            } else {
+                return false;
+            }
+        }
+       
         if (echiquier.isOccupied(i, j)) {
             return false;
         }
@@ -71,6 +87,7 @@ class Pion extends Piece {
             return false;
         }
     }
+
 
 }
 
