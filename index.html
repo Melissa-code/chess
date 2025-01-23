@@ -35,15 +35,20 @@
 
             // Test deplacement d'un pion blanc
             const pionBlanc = echiquier.getPosition(1, 0); 
+            // const result = echiquier.deplacerPiece(pionBlanc, 2, 0); 
+            // console.log("Test 1 pion blanc true? :", result);
             const result = echiquier.deplacerPiece(pionBlanc, 2, 0); 
-            console.log("Test 1 pion blanc true? :", result);
+            console.log("Test 1 pion blanc true? ", result);
+
 
             // Test deplacement d'un pion noir 
             const pionNoir = echiquier.getPosition(6, 0); 
-            const result2 = echiquier.deplacerPiece(pionNoir, 4, 0); 
-            console.log("Test 2 pion noir true? :", result);
+            //const result2 = echiquier.deplacerPiece(pionNoir, 4, 0); 
+            //console.log("Test 2 pion noir true? :", result2);
 
             //console.log(echiquier.getPosition(0, 0));
+       
+            view.afficherPieces();
 
         </script>
     </body>

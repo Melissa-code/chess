@@ -8,6 +8,11 @@ class Piece {
         this.color = color;
         this.i = i;
         this.j = j;
+        this.isMoved = false;
+        this.oldPosition = { 
+            i: i, 
+            j: j 
+        };
     }
 
     canMove(echiquier, i, j) {
@@ -87,8 +92,6 @@ class Pion extends Piece {
             return false;
         }
     }
-
-
 }
 
 /* ********* TOUR ********** */
@@ -240,8 +243,13 @@ class Echiquier {
   
     deplacerPiece(piece, i, j) {
         if (piece.canMove(this, i, j)) {
+            piece.oldPosition = { 
+                i: piece.i, 
+                j: piece.j 
+            };
             piece.i = i; 
             piece.j = j;
+            piece.isMoved = true;
             console.log(`Nouvelle position de la pièce: ${i} ${j}`); 
             return true;
         } else {

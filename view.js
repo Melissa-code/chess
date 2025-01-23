@@ -56,6 +56,29 @@ class View {
             const positionY = y * this.tailleCarreau + this.tailleCarreau /2; 
 
             this.ctx.fillText(piece.symbol, positionX, positionY);  
+
+
+            // Update piece
+            if (piece.isMoved) {
+                // Efface ctx du canvas
+                this.ctx.clearRect(
+                    piece.oldPosition.j * this.tailleCarreau, 
+                    piece.oldPosition.i * this.tailleCarreau, 
+                    this.tailleCarreau, 
+                    this.tailleCarreau
+                );
+                // Redessine la case 
+                this.ctx.fillStyle = (piece.oldPosition.j + piece.oldPosition.i) % 2 === 0 ? "#778da9" : "#293241";
+                this.ctx.fillRect(
+                    piece.oldPosition.j * this.tailleCarreau, 
+                    piece.oldPosition.i * this.tailleCarreau, 
+                    this.tailleCarreau, 
+                    this.tailleCarreau
+                );
+
+                piece.isMoved = false; 
+            }
+
         }
     }
 
