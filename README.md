@@ -123,14 +123,24 @@ Le plateau d'échecs est représenté sous la forme d'une **liste de pièces**, 
 ---
 
 
-## Déplacement des pièces 
+## Déplacement des pièces dans le model 
 
-### Vérifier si la pièce ne sort pas du jeu
+### Classe mère Piece 
 
-1. Dans la classe mère, créer une méthode `canMove(echiquier, i, j)`;
+1. Dans la classe Piece, créer une méthode `canMove(echiquier, i, j)` pour vérifier que la pièce ne sort pas de l'échiquier;
 
-2. Dans la classe échiquier, vérifier que la case visée n'est pas déjà occupée `isOccupied(i, j)`;
+2. Dans la classe Piece, créer une méthode `canAttack(echiquier, i, j)` qui est semblable pour toutes les pièces à `canMove(echiquier, i, j)` excepté pour le pion qui attaque différemment de son déplacement habituel; 
 
-3. Dans les classes filles de Piece, vérifier la possibilité du déplacement en fonction des règles du jeu `canMove(echiquier, i, j)`;
 
-4. Dans la classe échiquier, créer une méthode `déplacerPiece(piece, i, j)`
+### Classes filles 
+
+1. Dans les classes filles de Piece, vérifier la possibilité du déplacement en fonction des règles du jeu `canMove(echiquier, i, j)`;
+
+2. Dans les classes filles de Piece, vérifier si le déplacement est possible avec  `isOccupied(i, j)` c'est-à-dire si aucune pièce ne se trouve déjà à la position `i j`;
+
+3. Dans les classes filles de Piece, déterminer ensuite le déplacement; 
+
+
+### Classe echiquier 
+
+1. Dans la classe échiquier, créer une méthode `déplacerPiece(piece, i, j)`; 

@@ -34,21 +34,33 @@
             const view = new View(echiquier, document, 80);
 
             // Test deplacement d'un pion blanc
-            const pionBlanc = echiquier.getPosition(1, 0); 
+            const pionBlanc = echiquier.getPosition(1, 7); 
+            const pionNoir = echiquier.getPosition(6, 0); 
+            pionNoir.i=3;
+            pionNoir.j=7;
+
             // const result = echiquier.deplacerPiece(pionBlanc, 2, 0); 
             // console.log("Test 1 pion blanc true? :", result);
-            const result = echiquier.deplacerPiece(pionBlanc, 2, 0); 
-            console.log("Test 1 pion blanc true? ", result);
+            //const result = echiquier.deplacerPiece(pionBlanc, 2, 0); 
+            //console.log("Test 1 pion blanc true? ", result);
 
+            for (let i = -1; i <= 8; i++) {
+                for (let j = -1; j <= 8; j++) {
+                
+                    // if (pionBlanc.canAttack(echiquier, i, j)) {
+                    //     console.log('pion blanc canAttack:', i, j)
+                    // }
+                    // if (pionNoir.canAttack(echiquier, i, j)) {
+                    //     console.log('pion noir canAttack:', i, j)
+                    // }
 
-            // Test deplacement d'un pion noir 
-            const pionNoir = echiquier.getPosition(6, 0); 
-            //const result2 = echiquier.deplacerPiece(pionNoir, 4, 0); 
-            //console.log("Test 2 pion noir true? :", result2);
-
-            //console.log(echiquier.getPosition(0, 0));
-       
+                    if (pionBlanc.canMove(echiquier, i,j)) {
+                        console.log('pion blanc canMove:', i, j)
+                    }
+                }
+            }
             view.afficherPieces();
+
 
         </script>
     </body>

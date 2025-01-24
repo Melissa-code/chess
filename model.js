@@ -17,13 +17,18 @@ class Piece {
 
     canMove(echiquier, i, j) {
         if (i < 0 || i > 7 || j < 0 || j > 7) {
-            console.log('Pièce hors de l’échiquier');
+            //console.log('Pièce hors de l’échiquier');
             return false;
         } else {
             return true; 
         }
     }
+
+    canAttack(echiquier, i, j) {
+        return this.canMove(echiquier, i, j);
+    }
 }
+
 
 /* ********* PION ********** */
 
@@ -34,6 +39,22 @@ class Pion extends Piece {
         this.symbol = color === "white" ? "\u2659" : "\u265F";
     }
 
+    canAttack(echiquier, i, j) {
+        if (!super.canMove(echiquier, i, j)) {
+            return false; 
+        }
+        // capture adversaire
+        if (this.color === "white") {
+            if (this.i +1 === i && (this.j +1 === j || this.j -1 === j)) {
+                return true;
+            }
+        } else {
+            if (this.i -1 === i && (this.j +1 === j || this.j -1 === j)) {
+                return true;
+            }
+        } 
+    }
+    
     /**
      * règles de déplacement du pion 
      * @returns {boolean} 
@@ -41,22 +62,6 @@ class Pion extends Piece {
     canMove(echiquier, i, j) {
         if (!super.canMove(echiquier, i, j)) {
             return false; 
-        }
-
-        // capture adversaire
-        const pieceACapturer = echiquier.getPosition(i, j);
-        if (pieceACapturer) {
-            if (pieceACapturer.color !== this.color) {
-                // supprime adversaire (nb 1)
-                const index = echiquier.listePieces.indexOf(pieceACapturer); 
-                if (index >= 0) { 
-                    echiquier.listePieces.splice(index, 1); 
-                }
-                console.log("Pièce adverse capturée par le pion")
-                return true; 
-            } else {
-                return false;
-            }
         }
        
         if (echiquier.isOccupied(i, j)) {
@@ -67,8 +72,7 @@ class Pion extends Piece {
         if (this.color === "white") {
             // Avance de 2 cases
             if (this.i === 1 && i === 3 && this.j === j) {
-                console.log("Pion blanc avance de 2 cases")
-                return true; 
+                return !echiquier.isOccupied(2, j);  
             }
             // Avance de 1 case
             if (i === this.i + 1 && this.j === j) { 
@@ -81,8 +85,7 @@ class Pion extends Piece {
         } else {
             // Avance de 2 cases
             if (this.i === 6 && i === 4 && this.j === j) {
-                console.log("Pion noir avance de 2 cases")
-                return true; 
+                return !echiquier.isOccupied(5, j); 
             }
             // Avance de 1 case
             if (i === this.i - 1 && this.j === j) { 
