@@ -86,6 +86,7 @@ class Pion extends Piece {
             // Avance de 2 cases
             if (this.i === 6 && i === 4 && this.j === j) {
                 return !echiquier.isOccupied(5, j); 
+                
             }
             // Avance de 1 case
             if (i === this.i - 1 && this.j === j) { 
@@ -104,6 +105,61 @@ class Tour extends Piece {
     constructor(color, i, j) {
         super(color, i, j);
         this.symbol = color === "white" ? "\u2656" : "\u265C";
+    }
+
+    canMove(echiquier,  i, j) {
+        if (!super.canMove(echiquier, i, j)) {
+            return false; 
+        }
+    
+        // Avance sur meme ligne i horiz
+        if (this.i === i) {
+            let minJ, maxJ;
+            if (this.j < j) {
+                minJ = this.j+1;
+                maxJ = j-1;
+            } else {
+                minJ = j +1;
+                maxJ = this.j -1;
+            }
+           
+            for (let col = minJ; col <= maxJ; col++) {
+                if (echiquier.isOccupied(i, col)) {
+                    return false; 
+                }
+            }
+
+            if (echiquier.isOccupied(i, j) && this.color == echiquier.getPosition(i,j).color) {
+                return false;
+            } 
+
+            return true;
+        }
+
+        // Avance sur meme col j verticale
+        if (this.j === j) {
+            let minI, maxI;
+            if (this.i < i) {
+                minI = this.i +1;
+                maxI = i -1;
+            } else {
+                minI = i +1;
+                maxI = this.i -1;
+            }
+            for (let row = minI; row <= maxI; row++) {
+                if (echiquier.isOccupied(row, j)) {
+                    return false; 
+                }
+            }
+
+            if (echiquier.isOccupied(i, j) && this.color == echiquier.getPosition(i,j).color) {
+                return false;
+            } 
+
+            return true;
+        }
+
+        return false;
     }
 }
 
@@ -226,7 +282,7 @@ class Echiquier {
     getPosition(i, j) {
         for(let k = 0; k < this.listePieces.length; k++ ) {
             if(this.listePieces[k].i === i && this.listePieces[k].j === j) {
-                console.log(`Position actuelle de la piece : ${i} ${j}`);
+                //console.log(`Position actuelle de la piece : ${i} ${j}`);
                 return this.listePieces[k];
             }
         }
@@ -237,7 +293,7 @@ class Echiquier {
     isOccupied(i, j) {
         for (const piece of this.listePieces) {
             if (piece.i === i && piece.j === j) {
-                console.log("Case occupée");
+                //console.log("Case occupée");
                 return true;
             }
         }
