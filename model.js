@@ -122,14 +122,14 @@ class Tour extends Piece {
                 minJ = j +1;
                 maxJ = this.j -1;
             }
-           
+            // de position de la tour +1 à destination -1
             for (let col = minJ; col <= maxJ; col++) {
                 if (echiquier.isOccupied(i, col)) {
                     return false; 
                 }
             }
-
-            if (echiquier.isOccupied(i, j) && this.color == echiquier.getPosition(i,j).color) {
+            // destination: pièce de meme couleur  
+            if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
                 return false;
             } 
 
@@ -152,7 +152,7 @@ class Tour extends Piece {
                 }
             }
 
-            if (echiquier.isOccupied(i, j) && this.color == echiquier.getPosition(i,j).color) {
+            if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
                 return false;
             } 
 
@@ -171,6 +171,32 @@ class Cavalier extends Piece {
         super(color, i, j);
         this.symbol = color === "white" ? "\u2658" : "\u265E";
     }
+
+    canMove(echiquier, i, j) {
+        if (!super.canMove(echiquier, i, j)) {
+            return false; 
+        }
+
+        if (echiquier.isOccupied(i, j)) {
+            return false;
+        }
+
+        const mouvementsPossibles = [
+            [2, 1], [1, 2], [-1, 2], [-2, 1],
+            [-2, -1], [-1, -2], [1, -2], [2, -1]
+        ];
+
+        for (let k = 0; k < mouvementsPossibles.length; k++) {
+            const diffRow = mouvementsPossibles[k][0];
+            const diffCol = mouvementsPossibles[k][1];
+            
+            if (this.i - i === diffRow && this.j - j === diffCol) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
 /* ********* FOU ********** */

@@ -138,7 +138,8 @@ Le plateau d'échecs est représenté sous la forme d'une **liste de pièces**, 
 
 2. Dans les classes filles de Piece, vérifier si le déplacement est possible avec  `isOccupied(i, j)` c'est-à-dire si aucune pièce ne se trouve déjà à la position `i j`;
 
-3. Dans les classes filles de Piece, déterminer ensuite le déplacement; 
+3. Dans les classes filles de Piece, déterminer ensuite le déplacement;
+`canMove()` & `canAttack`
 
 
 ### Classe echiquier 

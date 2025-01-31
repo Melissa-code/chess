@@ -34,22 +34,22 @@
             const view = new View(echiquier, document, 80);
 
             // Test deplacement 
-            let tour = echiquier.getPosition(7,7)
-            tour.i=3;
-            tour.j=4;
-            console.log('tour: ', tour)
+            let cavalier = echiquier.getPosition(7, 6)
+            cavalier.i=5;
+            cavalier.j=5;
+            console.log('cavalier: ', cavalier)
+
 
             let pionNoir = echiquier.getPosition(6, 0)
-            pionNoir.i = 3
-            pionNoir.j=5
-
+            pionNoir.i=4
+            pionNoir.j=3
 
             for (let i = -1; i <= 8; i++) {
                 for (let j = -1; j <= 8; j++) {
-                
-                    if (tour.canAttack(echiquier, i, j)) {
-                        console.log(`tour canMove`, i, j)
-                    }
+
+                    if (cavalier.canMove(echiquier, i, j)) {
+                        console.log(`cavalier canMove`, i, j)
+                    } 
                 }
             }
             view.afficherPieces();
