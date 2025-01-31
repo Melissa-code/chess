@@ -177,9 +177,9 @@ class Cavalier extends Piece {
             return false; 
         }
 
-        if (echiquier.isOccupied(i, j)) {
+        if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
             return false;
-        }
+        } 
 
         const mouvementsPossibles = [
             [2, 1], [1, 2], [-1, 2], [-2, 1],
@@ -194,9 +194,9 @@ class Cavalier extends Piece {
                 return true;
             }
         }
+
         return false;
     }
-
 }
 
 /* ********* FOU ********** */
