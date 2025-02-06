@@ -33,28 +33,30 @@
             const echiquier = new Echiquier();
             const view = new View(echiquier, document, 80);
 
-            let fou = echiquier.getPosition(7, 5)
-            fou.i = 5;
-            fou.j = 3;
-            console.log('fou: ', fou)
+         
+            // Test deplacement 
+            let roi = echiquier.getPosition(0, 4);
+            roi.i=2
+            roi.j=4;
 
-            let pionNoir = echiquier.getPosition(6, 0)
-            pionNoir.i=4
-            pionNoir.j=4
-
-            let pionNoir2 = echiquier.getPosition(6, 1)
-            pionNoir2.i=3
-            pionNoir2.j=1
+            view.afficherPieces();
 
             for (let i = -1; i <= 8; i++) {
                 for (let j = -1; j <= 8; j++) {
 
-                    if (fou.canMove(echiquier, i, j)) {
-                        console.log(`Fou canMove : `, i, j)
+                    if (roi.canAttack(echiquier, i, j)) {
+                        //console.log(`reine canAttack : `, i, j)
+                        view.highLightBox(i, j);
                     } 
+
                 }
             }
-            view.afficherPieces();
+            
+        // test pour déplacer une pièce 
+        // click btn this.i -> i 
+        // canMove -> deplacer
+        // attack (adv disparait) 
+        
 
         </script>
     </body>

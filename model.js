@@ -20,9 +20,13 @@ class Piece {
             //console.log('Pièce hors de l’échiquier');
             return false;
         } else {
+            if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
+                return false;
+            } 
             return true; 
         }
     }
+
 
     canAttack(echiquier, i, j) {
         return this.canMove(echiquier, i, j);
@@ -129,9 +133,9 @@ class Tour extends Piece {
                 }
             }
             // destination: pièce de meme couleur  
-            if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-                return false;
-            } 
+            // if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
+            //     return false;
+            // } 
 
             return true;
         }
@@ -152,9 +156,9 @@ class Tour extends Piece {
                 }
             }
 
-            if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-                return false;
-            } 
+            // if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
+            //     return false;
+            // } 
 
             return true;
         }
@@ -177,9 +181,9 @@ class Cavalier extends Piece {
             return false; 
         }
 
-        if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-            return false;
-        } 
+        // if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
+        //     return false;
+        // } 
 
         const mouvementsPossibles = [
             [2, 1], [1, 2], [-1, 2], [-2, 1],
@@ -213,10 +217,6 @@ class Fou extends Piece {
             return false; 
         }
 
-        if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-            return false;
-        } 
-
         // Check diagonale: this.i - i === this.j - j Ex: (1,1), (2,2), (3,3) ou (1,-1), (2,-2), (3,-3)
         if (Math.abs(this.i - i) !== Math.abs(this.j - j)) {
             return false;
@@ -249,6 +249,19 @@ class Reine extends Piece {
         super(color, i, j);
         this.symbol = color === "white" ? "\u2655" : "\u265B";
     }
+
+    canMove(echiquier, i, j) {
+        if (!super.canMove(echiquier, i, j)) {
+            return false; 
+        }
+
+        // comme le fou et la tour 
+        let newTour = new Tour(this.color, this.i, this.j);
+        let newFou = new Fou(this.color, this.i, this.j);
+
+        return newTour.canMove(echiquier, i, j) || newFou.canMove(echiquier, i, j);
+    }
+
 }
 
 /* ********* ROI ********** */
@@ -258,6 +271,17 @@ class Roi extends Piece {
     constructor(color, i, j) {
         super(color, i, j);
         this.symbol = color === "white" ? "♔" : "♚";
+    }
+
+    canMove(echiquier, i, j) {
+        if (!super.canMove(echiquier, i, j)) {
+            return false; 
+        }
+
+        let diffRow = Math.abs(this.i - i);
+        let diffCol = Math.abs(this.j - j);
+
+        return (diffRow <= 1 && diffCol <= 1) //true/false
     }
 }
 
