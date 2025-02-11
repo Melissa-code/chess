@@ -27,7 +27,6 @@ class Piece {
         }
     }
 
-
     canAttack(echiquier, i, j) {
         return this.canMove(echiquier, i, j);
     }
@@ -132,10 +131,6 @@ class Tour extends Piece {
                     return false; 
                 }
             }
-            // destination: pièce de meme couleur  
-            // if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-            //     return false;
-            // } 
 
             return true;
         }
@@ -155,10 +150,6 @@ class Tour extends Piece {
                     return false; 
                 }
             }
-
-            // if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-            //     return false;
-            // } 
 
             return true;
         }
@@ -180,10 +171,6 @@ class Cavalier extends Piece {
         if (!super.canMove(echiquier, i, j)) {
             return false; 
         }
-
-        // if (echiquier.isOccupied(i, j) && this.color === echiquier.getPosition(i,j).color) {
-        //     return false;
-        // } 
 
         const mouvementsPossibles = [
             [2, 1], [1, 2], [-1, 2], [-2, 1],
@@ -281,7 +268,7 @@ class Roi extends Piece {
         let diffRow = Math.abs(this.i - i);
         let diffCol = Math.abs(this.j - j);
 
-        return (diffRow <= 1 && diffCol <= 1) //true/false
+        return (diffRow <= 1 && diffCol <= 1) //bool
     }
 }
 

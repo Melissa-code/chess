@@ -11,6 +11,9 @@ class View {
 
         this.afficherEchiquier();
         this.afficherPieces(); 
+
+        this.myCanva.addEventListener("click", (e) => this.clickOnCanva(e));
+        this.pieceSelectionnee = null;
     }
 
     afficherEchiquier() {
@@ -82,7 +85,6 @@ class View {
         }
     }
 
-
     highLightBox(i,j) {
         let y = i; 
         let x = j;       
@@ -98,5 +100,38 @@ class View {
         );
     }
 
+    clickOnCanva(e) {
+        // Position exacte: renvoie la taille d'un élément et sa position par rapport à la fenêtre d'affichage 
+        const rect = this.myCanva.getBoundingClientRect();
+        // get X et Y dans le canvas
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        console.log(x)
+        console.log(y)
+    
+        // convertir les pixels en coordonnées 
+        const i = Math.floor(y / this.tailleCarreau); 
+        const j = Math.floor(x / this.tailleCarreau);  
+        console.log(`case cliquée ${i}, ${j}`);
+        this.gestionClic(i, j);
+    }
+
+    gestionClic(i, j) {
+        const piece = this.echiquier.getPosition(i, j);
+
+        if (!this.pieceSelectionnee) {
+            if (piece) {
+                this.pieceSelectionnee = piece;
+                this.highLightBox(i, j); 
+            }
+        } else {
+            if (this.pieceSelectionnee.canMove(this.echiquier, i, j)) {
+                this.echiquier.deplacerPiece(this.pieceSelectionnee, i, j);
+                this.afficherEchiquier();
+                this.afficherPieces();
+            }
+            this.pieceSelectionnee = null;
+        }
+    }
 
 }
