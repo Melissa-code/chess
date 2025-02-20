@@ -95,11 +95,9 @@ class View {
     highLightBox(i,j) {
         let y = i; 
         let x = j;       
-                
-        // bordure de la case 
-        this.ctx.lineWidth = 3;
-        this.ctx.fillStyle = "#FF0000"; 
-        this.ctx.fillRect(
+        this.ctx.lineWidth = 4;
+
+        this.ctx.strokeRect(
             x * this.tailleCarreau, 
             y * this.tailleCarreau,
             this.tailleCarreau,     

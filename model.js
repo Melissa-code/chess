@@ -411,12 +411,6 @@ class Echiquier {
     }
   }
 
-  switchTurnPlayer() {
-    console.log(`C'est au tour de ${this.tourDuJoueur} de joueur`);
-    this.tourDuJoueur = this.tourDuJoueur === 1 ? 2 : 1;
-    console.log(`C'est au tour de ${this.tourDuJoueur} de joueur`);
-  }
-
   gestionClic(i, j) {
     const piece = this.getPosition(i, j);
     let moveCompleted = false;
@@ -443,7 +437,7 @@ class Echiquier {
 
     //déplacement bien effectué avant de switcher de tour
     if (moveCompleted) {
-        this.switchTurnPlayer();
+        this.tourDuJoueur = this.tourDuJoueur === 1 ? 2 : 1;
     }
   }
 }
