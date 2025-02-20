@@ -311,6 +311,8 @@ class Echiquier {
         this.largeur = 8; 
         this.listePieces = []; 
         this.initGame(); 
+        this.pieceSelectionnee = null;
+
     }
 
     getTypeOfPiece(col) {
@@ -370,19 +372,56 @@ class Echiquier {
     }
   
     deplacerPiece(piece, i, j) {
-        if (piece.canMove(this, i, j)) {
-            piece.oldPosition = { 
-                i: piece.i, 
-                j: piece.j 
-            };
-            piece.i = i; 
-            piece.j = j;
-            piece.isMoved = true;
-            console.log(`Nouvelle position de la pièce: ${i} ${j}`); 
-            return true;
+        piece.oldPosition = { 
+            i: piece.i, 
+            j: piece.j 
+        }
+        piece.i = i; 
+        piece.j = j;
+        piece.isMoved = true;
+        console.log(`Nouvelle position de la pièce: ${i} ${j}`); 
+    }
+
+    //pièces restantes
+    remainedPieces(color) {
+        let nbPiecesRestantes = 0;
+
+        for(let k = 0; k < this.listePieces.length; k++ ) {
+            if (this.listePieces[k].color == color) {
+               nbPiecesRestantes ++; 
+            }
+        }
+
+        return nbPiecesRestantes;
+    }
+
+    deletePiece(piece) {
+        for(let k = 0; k < this.listePieces.length; k++ ) {
+            if (this.listePieces[k] === piece) {
+                this.listePieces.splice(k, 1); 
+                break;
+            }
+        }
+    }
+
+    gestionClic(i, j) {
+        const piece = this.getPosition(i, j);
+
+        if (!this.pieceSelectionnee) {
+            if (piece) {
+                this.pieceSelectionnee = piece;
+            }
         } else {
-            console.log("Déplacement impossible"); 
-            return false;
+            // si piece est nulle, fair un teste canMove et si elle est occupee fair un test canAttack 
+            if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
+                this.deplacerPiece(this.pieceSelectionnee, i, j);
+            }
+            if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
+                this.deletePiece(piece); 
+                this.deplacerPiece(this.pieceSelectionnee, i, j);
+            }
+
+            this.pieceSelectionnee = null;
         }
     }
 }

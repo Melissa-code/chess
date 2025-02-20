@@ -32,30 +32,29 @@
 
             const echiquier = new Echiquier();
             const view = new View(echiquier, document, 80);
-
          
             // Test deplacement 
-            let roi = echiquier.getPosition(0, 4);
-            roi.i=2
-            roi.j=4;
+            // let roi = echiquier.getPosition(0, 4);
 
-            view.afficherPieces();
+            // for (let i = -1; i <= 8; i++) {
+            //     for (let j = -1; j <= 8; j++) {
 
-            for (let i = -1; i <= 8; i++) {
-                for (let j = -1; j <= 8; j++) {
+            //         if (roi.canAttack(echiquier, i, j)) {
+            //             //console.log(`reine canAttack : `, i, j)
+            //             view.highLightBox(i, j);
+            //         } 
 
-                    if (roi.canAttack(echiquier, i, j)) {
-                        //console.log(`reine canAttack : `, i, j)
-                        view.highLightBox(i, j);
-                    } 
-
-                }
-            }
+            //     }
+            // }
             
         // test pour déplacer une pièce 
         // click btn this.i -> i 
         // canMove -> deplacer
         // attack (adv disparait) 
+
+        // tour des joueurs 
+        // vue affiche à qui c'est le tour
+     
         
 
         </script>

@@ -9,11 +9,9 @@ class View {
         this.myCanva.height = this.echiquier.hauteur * this.tailleCarreau;
         this.myCanva.width = this.echiquier.largeur * this.tailleCarreau;
 
-        this.afficherEchiquier();
-        this.afficherPieces(); 
+        this.refresh();
 
         this.myCanva.addEventListener("click", (e) => this.clickOnCanva(e));
-        this.pieceSelectionnee = null;
     }
 
     afficherEchiquier() {
@@ -85,6 +83,18 @@ class View {
         }
     }
 
+    refresh() {
+        this.afficherEchiquier();
+        this.afficherPieces();
+        let piece = this.echiquier.pieceSelectionnee;
+        
+        if (piece) {
+            this.highLightBox(piece.i, piece.j);
+        }
+
+        this.afficherScore();
+    }
+
     highLightBox(i,j) {
         let y = i; 
         let x = j;       
@@ -113,25 +123,14 @@ class View {
         const i = Math.floor(y / this.tailleCarreau); 
         const j = Math.floor(x / this.tailleCarreau);  
         console.log(`case cliquée ${i}, ${j}`);
-        this.gestionClic(i, j);
+        this.echiquier.gestionClic(i, j);
+
+        this.refresh(); 
     }
 
-    gestionClic(i, j) {
-        const piece = this.echiquier.getPosition(i, j);
-
-        if (!this.pieceSelectionnee) {
-            if (piece) {
-                this.pieceSelectionnee = piece;
-                this.highLightBox(i, j); 
-            }
-        } else {
-            if (this.pieceSelectionnee.canMove(this.echiquier, i, j)) {
-                this.echiquier.deplacerPiece(this.pieceSelectionnee, i, j);
-                this.afficherEchiquier();
-                this.afficherPieces();
-            }
-            this.pieceSelectionnee = null;
-        }
+    afficherScore() {
+        console.log("compteur white:", this.echiquier.remainedPieces("white"))
+        console.log("compteur black:", this.echiquier.remainedPieces("black"))
     }
 
 }
