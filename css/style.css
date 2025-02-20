@@ -41,9 +41,17 @@ h1 {
   border: 1px solid var(--light-grey);
 }
 
-.message-player {
+.message-player, .remained-pieces {
   text-align: center; 
-  font-size: 24px; 
   color: var(--white);
+}
+
+.message-player {
+  font-size: 20px; 
+  margin-bottom: .5rem;
+}
+
+.remained-pieces {
+  font-size: 16px; 
   margin-bottom: 2rem;
 }

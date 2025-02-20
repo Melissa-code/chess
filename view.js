@@ -88,7 +88,7 @@ class View {
             this.highLightBox(piece.i, piece.j);
         }
 
-        this.afficherScore();
+        this.displayRemainedPieces() 
         this.displayTurnOfPlayer();
     }
 
@@ -123,10 +123,11 @@ class View {
         this.refresh(); 
     }
 
-    afficherScore() {
-        console.log("compteur white:", this.echiquier.remainedPieces("white"))
-        console.log("compteur black:", this.echiquier.remainedPieces("black"))
-    
+    displayRemainedPieces() {
+        const currentPlayerColor = this.echiquier.tourDuJoueur === 1 ? "white" : "black";
+        const remainedPiecesCount = this.echiquier.remainedPieces(currentPlayerColor);
+        const remainedPieces = document.querySelector(".remained-pieces"); 
+        remainedPieces.textContent = `Pièces restantes : ${remainedPiecesCount}`;
     }
 
     displayTurnOfPlayer() {
