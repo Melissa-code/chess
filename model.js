@@ -419,24 +419,31 @@ class Echiquier {
 
   gestionClic(i, j) {
     const piece = this.getPosition(i, j);
+    let moveCompleted = false;
 
     if (!this.pieceSelectionnee) {
-      if (piece) {
-        this.pieceSelectionnee = piece;
-      }
+        if (piece && ((this.tourDuJoueur === 1 && piece.color === "white") || 
+        (this.tourDuJoueur === 2 && piece.color !== "white"))) {
+            this.pieceSelectionnee = piece;
+        }
     } else {
       // si piece est nulle (case vide), faire un test canMove et si elle est occupee faire un test canAttack
       if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
         this.deplacerPiece(this.pieceSelectionnee, i, j);
+        moveCompleted = true;
       }
       if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
         this.deletePiece(piece);
         this.deplacerPiece(this.pieceSelectionnee, i, j);
+        moveCompleted = true;
       }
 
       this.pieceSelectionnee = null;
-    }
+    } 
 
-    this.switchTurnPlayer();
+    //déplacement bien effectué avant de switcher de tour
+    if (moveCompleted) {
+        this.switchTurnPlayer();
+    }
   }
 }

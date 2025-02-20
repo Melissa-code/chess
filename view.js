@@ -5,12 +5,9 @@ class View {
         this.myCanva = document.querySelector("#myCanvas");
         this.tailleCarreau = tailleCarreau; 
         this.ctx = this.myCanva.getContext("2d");
-        
         this.myCanva.height = this.echiquier.hauteur * this.tailleCarreau;
         this.myCanva.width = this.echiquier.largeur * this.tailleCarreau;
-
         this.refresh();
-
         this.myCanva.addEventListener("click", (e) => this.clickOnCanva(e));
     }
 
@@ -58,7 +55,6 @@ class View {
 
             this.ctx.fillText(piece.symbol, positionX, positionY);  
 
-
             // Update piece
             if (piece.isMoved) {
                 // Efface ctx du canvas
@@ -93,6 +89,7 @@ class View {
         }
 
         this.afficherScore();
+        this.displayTurnOfPlayer();
     }
 
     highLightBox(i,j) {
@@ -116,13 +113,11 @@ class View {
         // get X et Y dans le canvas
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        console.log(x)
-        console.log(y)
     
         // convertir les pixels en coordonnées 
         const i = Math.floor(y / this.tailleCarreau); 
         const j = Math.floor(x / this.tailleCarreau);  
-        console.log(`case cliquée ${i}, ${j}`);
+        //console.log(`case cliquée ${i}, ${j}`);
         this.echiquier.gestionClic(i, j);
 
         this.refresh(); 
@@ -131,6 +126,14 @@ class View {
     afficherScore() {
         console.log("compteur white:", this.echiquier.remainedPieces("white"))
         console.log("compteur black:", this.echiquier.remainedPieces("black"))
+    
     }
 
-}
+    displayTurnOfPlayer() {
+        const flag = this.echiquier.tourDuJoueur === 1 ? " 🔲" : " 🔳";
+        const player = this.echiquier.tourDuJoueur === 1 ?  "Blancs" :  "Noirs";
+        const turnPlayerMessage = document.querySelector(".message-player"); 
+        turnPlayerMessage.textContent = `C'est au tour des ${player} de jouer ${flag}`;
+    }
+
+} 
