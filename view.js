@@ -122,10 +122,10 @@ class View {
     }
 
     displayRemainedPieces() {
-        const currentPlayerColor = this.echiquier.tourDuJoueur === 1 ? "white" : "black";
-        const remainedPiecesCount = this.echiquier.remainedPieces(currentPlayerColor);
+        const remainedPiecesCountWhite = this.echiquier.remainedPieces("white");
+        const remainedPiecesCountBlack = this.echiquier.remainedPieces("black");
         const remainedPieces = document.querySelector(".remained-pieces"); 
-        remainedPieces.textContent = `Pièces restantes : ${remainedPiecesCount}`;
+        remainedPieces.textContent = `Pièces restantes des Blancs: ${remainedPiecesCountWhite} et des Noirs: ${remainedPiecesCountBlack}`;
     }
 
     displayTurnOfPlayer() {

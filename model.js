@@ -308,7 +308,7 @@ class Echiquier {
     this.listePieces = [];
     this.initGame();
     this.pieceSelectionnee = null;
-    this.tourDuJoueur = 1;
+    this.tourDuJoueur = "white";
   }
 
   getTypeOfPiece(col) {
@@ -416,8 +416,8 @@ class Echiquier {
     let moveCompleted = false;
 
     if (!this.pieceSelectionnee) {
-        if (piece && ((this.tourDuJoueur === 1 && piece.color === "white") || 
-        (this.tourDuJoueur === 2 && piece.color !== "white"))) {
+        if (piece && ((this.tourDuJoueur === "white" && piece.color === "white") || 
+        (this.tourDuJoueur === "black" && piece.color !== "white"))) {
             this.pieceSelectionnee = piece;
         }
     } else {
@@ -437,7 +437,69 @@ class Echiquier {
 
     //déplacement bien effectué avant de switcher de tour
     if (moveCompleted) {
-        this.tourDuJoueur = this.tourDuJoueur === 1 ? 2 : 1;
+        this.tourDuJoueur = this.tourDuJoueur === "white" ? "black" : "white";
     }
+  }
+
+  // return true
+  echecEtMat(i, j) {
+    //trouver le roi du joueur courant 
+    let roiTourCourant;
+    for (let k = 0; k < this.listePieces.length; k++) {
+      if (this.listePieces[k] instanceof Roi && this.tourDuJoueur == this.listePieces[k].color) {
+       roiTourCourant = this.listePieces[k];
+       break;
+      }
+    }
+
+    //Vérifier si le roi est en échec - break optimise performance
+    let roiEnEchec = false;
+    let attaquant = null; 
+    for (let k = 0; k < this.listePieces.length; k++) {
+      if (this.listePieces[k].color !== this.tourDuJoueur 
+        && this.listePieces[k].canAttack(this, roiTourCourant.i, roiTourCourant.j)) {
+          roiEnEchec = true;
+          attaquant = this.listePieces[k]; 
+          break;
+      }
+    }
+    if (!attaquant) return false;
+    
+    // faire backup de liste pour anticiper le  mouvement du roi
+    let cloneListePieces = []; 
+    for (let k = 0; k < this.listePieces.length; k++) {
+      cloneListePieces.push(Object.create(this.listePieces[k])) ;
+    }
+    
+    // trouver toutes les cases où peut s'échapper/attaquer le roi 
+    let mouvementsPossibles = [
+      [-1, -1], [-1, 0], [-1, 1],
+      [0, -1],           [0, 1],
+      [1, -1],  [1, 0],  [1, 1]
+    ]; 
+    for (let [x, y] of mouvementsPossibles) {
+      let newPositionX = roiTourCourant.i + x;
+      let newPositionY = roiTourCourant.j + y;
+      if (roiTourCourant.canMove(this, newPositionX, newPositionY)) {
+        return false;
+      } 
+    }
+
+    //Vérifier si une autre pièce du joueur courant peut capturer l'attaquant
+    for (let k = 0; k < this.listePieces.length; k ++) {
+      if (this.listePieces[k].color === this.tourDuJoueur
+        && !(this.listePieces[k] instanceof Roi)) {
+          if (this.listePieces[k].canAttack(this, attaquant.i, attaquant.j)) {
+            return false; 
+          }
+      }
+    }
+
+    //Vérifier si une autre pièce du joueur courant peut intercepter l'attaque
+
+    
+    // si toutes ces cases sont attaquable alors c'est echecetmat
+    return true; 
+
   }
 }
