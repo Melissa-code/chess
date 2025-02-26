@@ -441,65 +441,152 @@ class Echiquier {
     }
   }
 
-  // return true
-  echecEtMat(i, j) {
-    //trouver le roi du joueur courant 
-    let roiTourCourant;
+   
+  /**
+   * Trouver le roi du joueur courant
+   * @returns {Object} roiTourCourant
+   */
+  findCurrentKing() {
     for (let k = 0; k < this.listePieces.length; k++) {
-      if (this.listePieces[k] instanceof Roi && this.tourDuJoueur == this.listePieces[k].color) {
-       roiTourCourant = this.listePieces[k];
-       break;
+      if (this.listePieces[k] instanceof Roi && this.tourDuJoueur === this.listePieces[k].color) {
+        return this.listePieces[k];
       }
     }
 
-    //Vérifier si le roi est en échec - break optimise performance
-    let roiEnEchec = false;
-    let attaquant = null; 
+    return null; 
+  }
+
+  /**
+   * Vérifier si le roi est en échec 
+   * @returns {{roiEnEchec: boolean, attaquant: Object}} 
+   */
+  checkIfKingIsInCheck(roiTourCourant) {
     for (let k = 0; k < this.listePieces.length; k++) {
       if (this.listePieces[k].color !== this.tourDuJoueur 
         && this.listePieces[k].canAttack(this, roiTourCourant.i, roiTourCourant.j)) {
-          roiEnEchec = true;
-          attaquant = this.listePieces[k]; 
-          break;
+          return { roiEnEchec: true, attaquant: this.listePieces[k] }; 
       }
     }
-    if (!attaquant) return false;
-    
-    // faire backup de liste pour anticiper le  mouvement du roi
+
+    return { roiEnEchec: false, attaquant: null }; 
+  }
+
+  /**
+  * backup de liste des pièces 
+  *  @returns {Array} cloneListePieces
+  */
+  backupListPieces() {
     let cloneListePieces = []; 
+
     for (let k = 0; k < this.listePieces.length; k++) {
       cloneListePieces.push(Object.create(this.listePieces[k])) ;
     }
-    
-    // trouver toutes les cases où peut s'échapper/attaquer le roi 
+    return cloneListePieces; 
+  }
+
+  /**
+   * Check si le roi peut s'échapper/attaquer 
+   * @returns {boolean}
+   */
+  checkIfKingCanMove(roiTourCourant) {
     let mouvementsPossibles = [
       [-1, -1], [-1, 0], [-1, 1],
       [0, -1],           [0, 1],
       [1, -1],  [1, 0],  [1, 1]
     ]; 
+
     for (let [x, y] of mouvementsPossibles) {
       let newPositionX = roiTourCourant.i + x;
       let newPositionY = roiTourCourant.j + y;
       if (roiTourCourant.canMove(this, newPositionX, newPositionY)) {
-        return false;
+        return true;
       } 
-    }
+    }  
 
-    //Vérifier si une autre pièce du joueur courant peut capturer l'attaquant
+    return false;
+  }
+  
+  /**
+   * Vérifier si une autre pièce du joueur courant peut capturer l'attaquant
+   * @returns {boolean}
+   */
+  checkIfCurrentPlayerCanAttackEnemy(attaquant) {
     for (let k = 0; k < this.listePieces.length; k ++) {
-      if (this.listePieces[k].color === this.tourDuJoueur
-        && !(this.listePieces[k] instanceof Roi)) {
+      if (this.listePieces[k].color === this.tourDuJoueur && !(this.listePieces[k] instanceof Roi)) {
           if (this.listePieces[k].canAttack(this, attaquant.i, attaquant.j)) {
-            return false; 
+            return true; 
           }
       }
     }
-
-    //Vérifier si une autre pièce du joueur courant peut intercepter l'attaque
-
     
-    // si toutes ces cases sont attaquable alors c'est echecetmat
-    return true; 
+    return false;   
+  }
 
+  /**
+   * Vérifier si une autre pièce du joueur courant peut bloquer l'attaquant
+   * @returns {boolean}
+   */
+  checkIfPieceCanInterceptAttack(roiTourCourant, attaquant) {
+    // direction de l'attaquant vers le roi
+    let direction = {
+        x: roiTourCourant.i - attaquant.i,
+        y: roiTourCourant.j - attaquant.j
+    };
+
+    //avancer d'un pas vers la droite gauche haut bas sur place
+    //stepX = 2 / Math.abs(2) = 2 / 2 = 1 (-> vers la droite)
+    let stepX = 0;
+    if (direction.x !== 0) {
+      stepX = direction.x / Math.abs(direction.x);
+    } 
+    let stepY = 0;
+    if (direction.y !== 0) {
+      stepY = direction.y / Math.abs(direction.y);
+    } 
+
+    let positionX = attaquant.i + stepX;
+    let positionY = attaquant.j + stepY;
+
+    while (positionX !== roiTourCourant.i || positionY !== roiTourCourant.j) {
+        for (let k = 0; k < this.listePieces.length; k++) {
+            if (this.listePieces[k].color === this.tourDuJoueur && !(this.listePieces[k] instanceof Roi)) {
+                if (this.listePieces[k].canMove(this, positionX, positionY)) {
+                    const originalPosition = { 
+                      i: this.listePieces[k].i, 
+                      j: this.listePieces[k].j 
+                    };
+                    this.deplacerPiece(this.listePieces[k], positionX, positionY);
+
+                    const isRoiEnEchec = this.checkIfKingIsInCheck(this.findCurrentKing());
+                  
+                    this.deplacerPiece(this.listePieces[k], originalPosition.i, originalPosition.j);
+
+                    if (!isRoiEnEchec) {
+                        return true;
+                    }
+                }
+            }
+        }
+        positionX += stepX;
+        positionY += stepY;
+    }
+    
+    return false;
+  }
+
+  isEchecEtMat(i, j) {
+    const roiTourCourant = this.findCurrentKing();
+    const roiEnEchecEtAttaquant = this.checkIfKingIsInCheck(roiTourCourant);
+    if (!roiEnEchecEtAttaquant.roiEnEchec) return false;
+ 
+    this.backupListPieces();
+
+    if (this.checkIfKingCanMove(roiTourCourant) || 
+        this.checkIfCurrentPlayerCanAttackEnemy(roiEnEchecEtAttaquant.attaquant) || 
+        this.checkIfPieceCanInterceptAttack(roiTourCourant, roiEnEchecEtAttaquant.attaquant)) {
+        return false; 
+    }
+
+    return true; 
   }
 }
