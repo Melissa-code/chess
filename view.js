@@ -129,8 +129,8 @@ class View {
     }
 
     displayTurnOfPlayer() {
-        const flag = this.echiquier.tourDuJoueur === 1 ? " 🔲" : " 🔳";
-        const player = this.echiquier.tourDuJoueur === 1 ?  "Blancs" :  "Noirs";
+        const flag = this.echiquier.tourDuJoueur === "white" ? " 🔲" : " 🔳";
+        const player = this.echiquier.tourDuJoueur === "white" ?  "Blancs" :  "Noirs";
         const turnPlayerMessage = document.querySelector(".message-player"); 
         turnPlayerMessage.textContent = `C'est au tour des ${player} de jouer ${flag}`;
     }

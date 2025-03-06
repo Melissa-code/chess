@@ -33,36 +33,6 @@
 
             const echiquier = new Echiquier();
             const view = new View(echiquier, document, 80);
-
-            
-            class Personne {
-                constructor(nom) {
-                    this.nom = nom; 
-                }
-
-                afficher() {
-                    console.log(this.nom); 
-                }
-            }
-
-            class Femme extends Personne {
-                constructor(nom) {
-                    super(nom);
-                }
-                afficher()
-                {  console.log("femme");
-                    super.afficher();
-                  
-                }
-            }
-
-            let personne = new Femme("joe"); 
-            personne.afficher();
-
-            let personneClone = Object.create(personne);
-            personneClone.afficher(); 
-
-
          
             // Test deplacement 
             // let roi = echiquier.getPosition(0, 4);
