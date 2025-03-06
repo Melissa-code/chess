@@ -41,17 +41,23 @@ h1 {
   border: 1px solid var(--light-grey);
 }
 
-.message-player, .remained-pieces {
+:is(.message-player, .remained-pieces, .check)  {
   text-align: center; 
   color: var(--white);
 }
 
 .message-player {
   font-size: 20px; 
-  margin-bottom: .5rem;
+  margin-bottom: 1rem;
 }
 
 .remained-pieces {
   font-size: 16px; 
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+.check {
+  font-size: 20px; 
+  font-weight: bold;
+  margin-bottom: 1rem;
 }

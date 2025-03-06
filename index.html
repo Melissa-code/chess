@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Jeu d'échecs développé avec les design patterns MVC, Factory Command et Observer en JavaScript. Parfait pour les développeurs.">
-        <link rel="icon" type="image/svg" href="./images/chess1.svg" />
+        <link rel="icon" type="image/svg" href="./images/chess_white1.svg" />
         <link rel="stylesheet" href="./css/normalize.css">
         <link rel="stylesheet" href="./css/style.css">
         <title>Jeu d'échecs</title>
@@ -18,8 +18,11 @@
                 <h1>Jeu d'échecs</h1>
             </div>
             <!-- Alert -->
-            <div class="message-player"></div>
-            <div class="remained-pieces"></div>
+            <div class="messages-bg">
+                <div class="message-player"></div>
+                <div class="remained-pieces"></div>
+                <div class="check"></div>
+            </div>
             <div id="echiquier">
                 <!-- Matrix -->
                 <canvas id="myCanvas"></canvas>

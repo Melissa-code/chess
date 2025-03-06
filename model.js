@@ -307,6 +307,7 @@ class Echiquier {
     this.pieceSelectionnee = null;
     this.tourDuJoueur = "white";
     this.gameOver = false;
+    this.inCheck = false; 
   }
 
   getTypeOfPiece(col) {
@@ -444,8 +445,10 @@ class Echiquier {
       
       if (roiEnEchec) {
           console.log("Roi en échec !!!!!");
+          this.inCheck = true; 
       } else {
           console.log("Le roi n'est pas en échec !");
+          this.inCheck = false; 
       }
       
       if (this.isEchecEtMat()) {

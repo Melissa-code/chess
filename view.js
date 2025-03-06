@@ -90,6 +90,7 @@ class View {
 
         this.displayRemainedPieces() 
         this.displayTurnOfPlayer();
+        this.displayCheck();
     }
 
     highLightBox(i,j) {
@@ -128,11 +129,46 @@ class View {
         remainedPieces.textContent = `Pièces restantes des Blancs: ${remainedPiecesCountWhite} et des Noirs: ${remainedPiecesCountBlack}`;
     }
 
+    createChessImage(player, imgSrc) {
+        const container = document.createElement("span");
+        container.style.backgroundColor = this.echiquier.tourDuJoueur === "white" ? "#415a77" : "#778da9";
+        container.style.width = "2.5rem";
+        container.style.height = "2.5rem";
+        container.style.border = "2px solid #e0e1dd";
+        container.style.borderRadius = "20%";
+        container.style.padding = ".5rem .5rem .1rem .5rem";
+        container.style.marginLeft = ".6rem"; 
+
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.alt = `Tour des ${player}`;
+        img.style.width = "1.5rem";  
+        img.style.height = "1.5rem";  
+        container.appendChild(img);
+    
+        return container;
+    }
+    
     displayTurnOfPlayer() {
-        const flag = this.echiquier.tourDuJoueur === "white" ? " 🔲" : " 🔳";
-        const player = this.echiquier.tourDuJoueur === "white" ?  "Blancs" :  "Noirs";
         const turnPlayerMessage = document.querySelector(".message-player"); 
-        turnPlayerMessage.textContent = `C'est au tour des ${player} de jouer ${flag}`;
+        const imgSrc = this.echiquier.tourDuJoueur === "white" ? "images/chess_white1.svg" : "images/chess1.svg";
+        const player = this.echiquier.tourDuJoueur === "white" ?  "Blancs" :  "Noirs";
+        const imgContainer = this.createChessImage(player, imgSrc); 
+    
+        turnPlayerMessage.textContent = `C'est au tour des ${player} de jouer `;
+        turnPlayerMessage.appendChild(imgContainer);  
     }
 
-} 
+    displayCheck() {
+        const check = document.querySelector('.check'); 
+    
+        if (this.echiquier.gameOver === true) {
+            check.textContent = `Echec et mat !`;
+        } else if (this.echiquier.inCheck === true) {
+            check.textContent = `Echec !`;
+        } else {
+            check.textContent = "";
+        }
+    }
+    
+}
