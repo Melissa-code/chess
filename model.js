@@ -24,6 +24,7 @@ class Piece {
       ) {
         return false;
       }
+
       return true;
     }
   }
@@ -307,7 +308,7 @@ class Echiquier {
     this.pieceSelectionnee = null;
     this.tourDuJoueur = "white";
     this.gameOver = false;
-    this.inCheck = false; 
+    this.inCheck = false;
   }
 
   getTypeOfPiece(col) {
@@ -359,7 +360,6 @@ class Echiquier {
   getPosition(i, j) {
     for (let k = 0; k < this.listePieces.length; k++) {
       if (this.listePieces[k].i === i && this.listePieces[k].j === j) {
-        
         return this.listePieces[k];
       }
     }
@@ -370,7 +370,6 @@ class Echiquier {
   isOccupied(i, j) {
     for (const piece of this.listePieces) {
       if (piece.i === i && piece.j === j) {
-        
         return true;
       }
     }
@@ -411,53 +410,73 @@ class Echiquier {
 
   gestionClic(i, j) {
     if (this.gameOver) {
-      return; 
+      return;
     }
 
     const piece = this.getPosition(i, j);
     let moveCompleted = false;
 
     if (!this.pieceSelectionnee) {
-        if (piece && ((this.tourDuJoueur === "white" && piece.color === "white") || 
-        (this.tourDuJoueur === "black" && piece.color !== "white"))) {
-            this.pieceSelectionnee = piece;
-        }
+      if (
+        piece &&
+        ((this.tourDuJoueur === "white" && piece.color === "white") ||
+          (this.tourDuJoueur === "black" && piece.color !== "white"))
+      ) {
+        this.pieceSelectionnee = piece;
+      }
     } else {
+      const monRoi = this.findKing(this.tourDuJoueur);
+      let oldi = this.pieceSelectionnee.i;
+      let oldj = this.pieceSelectionnee.j;
+
       // si piece est nulle (case vide), faire un test canMove et si elle est occupee faire un test canAttack
       if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
+        // si roi en echec apres deplacement de la piece, aucun mouvement
+        // speculer le deplacer a i,j puis demande si le roi est en echec
         this.deplacerPiece(this.pieceSelectionnee, i, j);
-        moveCompleted = true;
+
+        if (!this.checkIfKingIsInCheck(monRoi)) {
+          moveCompleted = true;
+        } else {
+          this.deplacerPiece(this.pieceSelectionnee, oldi, oldj);
+        }
       }
       if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
-        this.deletePiece(piece);
         this.deplacerPiece(this.pieceSelectionnee, i, j);
-        moveCompleted = true;
+
+        if (!this.checkIfKingIsInCheck(monRoi)) {
+          moveCompleted = true;
+          this.deletePiece(piece);
+
+        } else {
+          this.deplacerPiece(this.pieceSelectionnee, oldi, oldj);
+        }
       }
 
       this.pieceSelectionnee = null;
-    } 
+    }
 
     //déplacement bien effectué avant de switcher de tour
     if (moveCompleted) {
       // Check s'il y a échec
-      const roiAdverse = this.findAdverseKing(); 
+      const roiAdverse = this.findAdverseKing();
       let roiEnEchec = this.checkIfKingIsInCheck(roiAdverse);
-      
-      if (roiEnEchec) {
-          console.log("Roi en échec !!!!!");
-          this.inCheck = true; 
-      } else {
-          console.log("Le roi n'est pas en échec !");
-          this.inCheck = false; 
-      }
-      
-      if (this.isEchecEtMat()) {
-          console.log("Échec et mat !");
-          this.gameOver = true; 
 
-          return;
+      if (roiEnEchec) {
+        console.log("Roi en échec !!!!!");
+        this.inCheck = true;
+      } else {
+        console.log("Le roi n'est pas en échec !");
+        this.inCheck = false;
       }
-  
+
+      if (this.isEchecEtMat()) {
+        console.log("Échec et mat !");
+        this.gameOver = true;
+
+        return;
+      }
+
       this.tourDuJoueur = this.tourDuJoueur === "white" ? "black" : "white";
     }
   }
@@ -467,59 +486,75 @@ class Echiquier {
    * @returns {Object||null} adverseKing
    */
   findAdverseKing() {
-    for (let k = 0; k < this.listePieces.length; k++) {
-      if (this.listePieces[k] instanceof Roi && 
-        this.tourDuJoueur !== this.listePieces[k].color) {
+    let adverseColor = this.tourDuJoueur === "white" ? "black" : "white";
 
+    return this.findKing(adverseColor);
+  }
+
+  findKing(color) {
+    for (let k = 0; k < this.listePieces.length; k++) {
+      if (
+        this.listePieces[k] instanceof Roi &&
+        color === this.listePieces[k].color
+      ) {
         return this.listePieces[k];
       }
     }
 
-    return null; 
+    return null;
   }
 
   checkIfKingIsInCheck(roiAdverse) {
     for (let k = 0; k < this.listePieces.length; k++) {
-      let pieceAdverse = this.listePieces[k]; 
+      let pieceAdverse = this.listePieces[k];
 
-      if (pieceAdverse.color !== roiAdverse.color && 
-        pieceAdverse.canAttack(this, roiAdverse.i, roiAdverse.j)) {
-          console.log("Ahhh le roi "+ roiAdverse.color + " est en échec!!!!!");
+      if (
+        pieceAdverse.color !== roiAdverse.color &&
+        pieceAdverse.canAttack(this, roiAdverse.i, roiAdverse.j)
+      ) {
+        console.log("Ahhh le roi " + roiAdverse.color + " est en échec!!!!!");
 
-          return true;
+        return true;
       }
     }
 
-    return false; 
+    return false;
   }
 
   /**
-   * Check si le roi peut s'échapper/attaquer 
+   * Check si le roi peut s'échapper/attaquer
    * @returns {boolean}
    */
   whereKingCanMove(roiAdverse) {
     let mouvementsPossibles = [
-      [-1, -1], [-1, 0], [-1, 1],
-      [0, -1],           [0, 1],
-      [1, -1],  [1, 0],  [1, 1]
-    ]; 
-    let listPositionsPossibles = []; 
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+    ];
+    let listPositionsPossibles = [];
 
     for (let [x, y] of mouvementsPossibles) {
       let newPositionX = roiAdverse.i + x;
       let newPositionY = roiAdverse.j + y;
-      if (roiAdverse.canMove(this, newPositionX, newPositionY) 
-        || roiAdverse.canAttack(this, newPositionX, newPositionY)) {
-        listPositionsPossibles.push([newPositionX, newPositionY])
-      } 
-    }  
+      if (
+        roiAdverse.canMove(this, newPositionX, newPositionY) ||
+        roiAdverse.canAttack(this, newPositionX, newPositionY)
+      ) {
+        listPositionsPossibles.push([newPositionX, newPositionY]);
+      }
+    }
 
     return listPositionsPossibles;
   }
 
   isEchecEtMat() {
-    const roiAdverse = this.findAdverseKing(); 
-   
+    const roiAdverse = this.findAdverseKing();
+
     let roiEnEchec = this.checkIfKingIsInCheck(roiAdverse);
     if (!roiEnEchec) {
       console.log("Le roi n'est pas en échec. Pas de : échec et mat");
@@ -540,14 +575,18 @@ class Echiquier {
       // Restaure position initiale du roi adv
       roiAdverse.i = anciennePosition.i;
       roiAdverse.j = anciennePosition.j;
-      
-      if (!toujoursEnEchec) {
-          console.log("Le roi peut s'échapper !");
 
-          return false;
+      if (!toujoursEnEchec) {
+        console.log("Le roi peut s'échapper !");
+
+        return false;
       }
     }
 
-    return true; 
+    return true;
   }
+
+  // quand les noirs attaquent --> message Echec : OK
+  // Faire aussi quand les blancs se trompent --> se mettent en échec
+  /// afficher un message 
 }
