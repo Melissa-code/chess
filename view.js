@@ -170,5 +170,4 @@ class View {
             check.textContent = "";
         }
     }
-    
 }

@@ -253,6 +253,7 @@ class Reine extends Piece {
 /* ********* ROI ********** */
 
 class Roi extends Piece {
+
   constructor(color, i, j) {
     super(color, i, j);
     this.symbol = color === "white" ? "♔" : "♚";
@@ -269,7 +270,15 @@ class Roi extends Piece {
     return diffRow <= 1 && diffCol <= 1; //bool
   }
 
-  canRoque(echiquier) {
+  canRoque(echiquier, i, j) {
+    if (j === this.j +2) {
+      return this.canRoqueRight(echiquier);
+    } else if (j === this.j -2) {
+      return this.canRoqueLeft(echiquier);
+    }
+  }
+
+  canRoqueRight(echiquier) {
     // Check roi ne doit pas avoir bougé
     if (this.isMoved) return false;
     let row = this.i;//0 ou 7
@@ -280,6 +289,23 @@ class Roi extends Piece {
     if (!tour || !(tour instanceof Tour) || tour.isMoved) return false;
 
     if (echiquier.isOccupied(row, 5) || echiquier.isOccupied(row, 6)) return false;
+
+    if (echiquier.checkIfKingIsInCheck(this)) return false; 
+    
+    return true;
+  }
+
+  canRoqueLeft(echiquier) {
+    // Check roi ne doit pas avoir bougé
+    if (this.isMoved) return false;
+    let row = this.i;//0 ou 7
+
+    if (this.color === "white" && row !== 0 || this.color !== "white" && row !== 7) return false; 
+    let tour = echiquier.getPosition(row, 0);
+
+    if (!tour || !(tour instanceof Tour) || tour.isMoved) return false;
+
+    if (echiquier.isOccupied(row, 1) || echiquier.isOccupied(row, 2) || echiquier.isOccupied(row, 3)) return false;
 
     if (echiquier.checkIfKingIsInCheck(this)) return false; 
     
@@ -447,6 +473,7 @@ class Echiquier {
       let oldi = this.pieceSelectionnee.i;
       let oldj = this.pieceSelectionnee.j;
 
+      // roque roi tour 
       if (this.pieceSelectionnee instanceof Roi) {
         let row = this.pieceSelectionnee.i;
         let col = this.pieceSelectionnee.j;
@@ -454,12 +481,12 @@ class Echiquier {
         if ((this.pieceSelectionnee.color === "white" && row === 0 && col === 4) ||
           (this.pieceSelectionnee.color !== "white" && row === 7 && col === 4)
         ) {
-          if (j === 6) {
-            if (this.pieceSelectionnee.canRoque(this)) {
-              console.log("Petit roque ok");
-              this.deplacerPiece(this.pieceSelectionnee, row, 6);
-              let tour = this.getPosition(row, 7);
-              this.deplacerPiece(tour, row, 5);
+          if (j === 6 || j === 2) {
+            if (this.pieceSelectionnee.canRoque(this, row,  j)) {
+              console.log("roque ok");
+              this.deplacerPiece(this.pieceSelectionnee, row, j);
+              let tour = this.getPosition(row, (j === 6) ? 7 : 0);
+              this.deplacerPiece(tour, row, (j === 6) ? 5 : 3);
               moveCompleted = true;
             }
           }
@@ -467,7 +494,7 @@ class Echiquier {
       }
 
       // si piece est nulle (case vide), faire un test canMove et si elle est occupee faire un test canAttack
-      else if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
+      if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
         // si roi en echec apres deplacement de la piece, aucun mouvement
         // speculer le deplacer a i,j puis demande si le roi est en echec
         this.deplacerPiece(this.pieceSelectionnee, i, j);
@@ -480,7 +507,7 @@ class Echiquier {
         }
       }
 
-      else if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
+      if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
         this.deplacerPiece(this.pieceSelectionnee, i, j);
 
         if (!this.checkIfKingIsInCheck(monRoi)) {
