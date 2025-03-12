@@ -46,7 +46,7 @@ class View {
             let y = piece.i; 
 
             this.ctx.fillStyle = piece.color === "white" ? "#FFFFFF" : "#000000"; 
-            this.ctx.font = this.tailleCarreau * .8 + 'px Raleway'; 
+            this.ctx.font = this.tailleCarreau * .7 + 'px Raleway'; 
             this.ctx.textAlign = 'center' ; // horiz
             this.ctx.textBaseline = "middle"; // vertic
 
@@ -132,18 +132,18 @@ class View {
     createChessImage(player, imgSrc) {
         const container = document.createElement("span");
         container.style.backgroundColor = this.echiquier.tourDuJoueur === "white" ? "#415a77" : "#778da9";
-        container.style.width = "2.5rem";
-        container.style.height = "2.5rem";
-        container.style.border = "2px solid #e0e1dd";
-        container.style.borderRadius = "20%";
+        container.style.width = "1.5rem";
+        container.style.height = "1.5rem";
+        container.style.border = "1px solid #e0e1dd";
+        container.style.borderRadius = "10%";
         container.style.padding = ".5rem .5rem .1rem .5rem";
         container.style.marginLeft = ".6rem"; 
 
         const img = document.createElement("img");
         img.src = imgSrc;
         img.alt = `Tour des ${player}`;
-        img.style.width = "1.5rem";  
-        img.style.height = "1.5rem";  
+        img.style.width = "1.3rem";  
+        img.style.height = "1.3rem";  
         container.appendChild(img);
     
         return container;

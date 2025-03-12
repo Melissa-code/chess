@@ -47,17 +47,17 @@ h1 {
 }
 
 .message-player {
-  font-size: 20px; 
+  font-size: 18px; 
   margin-bottom: 1rem;
 }
 
 .remained-pieces {
-  font-size: 16px; 
+  font-size: 14px; 
   margin-bottom: 1rem;
 }
 
 .check {
-  font-size: 20px; 
+  font-size: 18px; 
   font-weight: bold;
   margin-bottom: 1rem;
 }

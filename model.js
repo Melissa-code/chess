@@ -438,6 +438,7 @@ class Echiquier {
         if (!this.checkIfKingIsInCheck(monRoi)) {
           moveCompleted = true;
         } else {
+          this.inCheck = true;
           this.deplacerPiece(this.pieceSelectionnee, oldi, oldj);
         }
       }
@@ -446,6 +447,7 @@ class Echiquier {
 
         if (!this.checkIfKingIsInCheck(monRoi)) {
           moveCompleted = true;
+          this.inCheck = false;
           this.deletePiece(piece);
 
         } else {
@@ -585,8 +587,4 @@ class Echiquier {
 
     return true;
   }
-
-  // quand les noirs attaquent --> message Echec : OK
-  // Faire aussi quand les blancs se trompent --> se mettent en échec
-  /// afficher un message 
 }
