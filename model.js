@@ -154,6 +154,7 @@ class Tour extends Piece {
   }
 }
 
+
 /* ********* CAVALIER ********** */
 
 class Cavalier extends Piece {
@@ -266,6 +267,24 @@ class Roi extends Piece {
     let diffCol = Math.abs(this.j - j);
 
     return diffRow <= 1 && diffCol <= 1; //bool
+  }
+
+  canRoque(echiquier) {
+    // Check roi ne doit pas avoir bougé
+    if (this.isMoved) return false;
+    let row = this.i;
+    let col = this.j;
+    let tour = echiquier.getPosition(0, 7);
+
+    if (row !== 0 || col !== 4) return false;
+
+    if (!tour || !(tour instanceof Tour) || tour.isMoved) return false;
+
+    if (echiquier.isOccupied(0, 5) || echiquier.isOccupied(0, 6)) return false;
+
+    if (echiquier.checkIfKingIsInCheck(this)) return false; 
+    
+    return true;
   }
 }
 
@@ -429,8 +448,19 @@ class Echiquier {
       let oldi = this.pieceSelectionnee.i;
       let oldj = this.pieceSelectionnee.j;
 
+      // canRoque (blancs)
+      if (this.pieceSelectionnee instanceof Roi && i === 0 && j === 6) {
+        if (this.pieceSelectionnee.canRoque(this)) {
+            console.log("Petit roque ok");
+            this.deplacerPiece(this.pieceSelectionnee, 0, 6);
+            let tour = this.getPosition(0, 7);
+            this.deplacerPiece(tour, 0, 5);
+            moveCompleted = true;
+        }
+      }
+
       // si piece est nulle (case vide), faire un test canMove et si elle est occupee faire un test canAttack
-      if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
+      else if (!piece && this.pieceSelectionnee.canMove(this, i, j)) {
         // si roi en echec apres deplacement de la piece, aucun mouvement
         // speculer le deplacer a i,j puis demande si le roi est en echec
         this.deplacerPiece(this.pieceSelectionnee, i, j);
@@ -465,15 +495,12 @@ class Echiquier {
       let roiEnEchec = this.checkIfKingIsInCheck(roiAdverse);
 
       if (roiEnEchec) {
-        console.log("Roi en échec !!!!!");
         this.inCheck = true;
       } else {
-        console.log("Le roi n'est pas en échec !");
         this.inCheck = false;
       }
 
       if (this.isEchecEtMat()) {
-        console.log("Échec et mat !");
         this.gameOver = true;
 
         return;
@@ -514,8 +541,7 @@ class Echiquier {
         pieceAdverse.color !== roiAdverse.color &&
         pieceAdverse.canAttack(this, roiAdverse.i, roiAdverse.j)
       ) {
-        console.log("Ahhh le roi " + roiAdverse.color + " est en échec!!!!!");
-
+      
         return true;
       }
     }
@@ -559,7 +585,7 @@ class Echiquier {
 
     let roiEnEchec = this.checkIfKingIsInCheck(roiAdverse);
     if (!roiEnEchec) {
-      console.log("Le roi n'est pas en échec. Pas de : échec et mat");
+
       return false;
     }
 
@@ -579,7 +605,6 @@ class Echiquier {
       roiAdverse.j = anciennePosition.j;
 
       if (!toujoursEnEchec) {
-        console.log("Le roi peut s'échapper !");
 
         return false;
       }
