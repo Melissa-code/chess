@@ -272,15 +272,14 @@ class Roi extends Piece {
   canRoque(echiquier) {
     // Check roi ne doit pas avoir bougé
     if (this.isMoved) return false;
-    let row = this.i;
-    let col = this.j;
-    let tour = echiquier.getPosition(0, 7);
+    let row = this.i;//0 ou 7
 
-    if (row !== 0 || col !== 4) return false;
+    if (this.color === "white" && row !== 0 || this.color !== "white" && row !== 7) return false; 
+    let tour = echiquier.getPosition(row, 7);
 
     if (!tour || !(tour instanceof Tour) || tour.isMoved) return false;
 
-    if (echiquier.isOccupied(0, 5) || echiquier.isOccupied(0, 6)) return false;
+    if (echiquier.isOccupied(row, 5) || echiquier.isOccupied(row, 6)) return false;
 
     if (echiquier.checkIfKingIsInCheck(this)) return false; 
     
@@ -448,14 +447,22 @@ class Echiquier {
       let oldi = this.pieceSelectionnee.i;
       let oldj = this.pieceSelectionnee.j;
 
-      // canRoque (blancs)
-      if (this.pieceSelectionnee instanceof Roi && i === 0 && j === 6) {
-        if (this.pieceSelectionnee.canRoque(this)) {
-            console.log("Petit roque ok");
-            this.deplacerPiece(this.pieceSelectionnee, 0, 6);
-            let tour = this.getPosition(0, 7);
-            this.deplacerPiece(tour, 0, 5);
-            moveCompleted = true;
+      if (this.pieceSelectionnee instanceof Roi) {
+        let row = this.pieceSelectionnee.i;
+        let col = this.pieceSelectionnee.j;
+
+        if ((this.pieceSelectionnee.color === "white" && row === 0 && col === 4) ||
+          (this.pieceSelectionnee.color !== "white" && row === 7 && col === 4)
+        ) {
+          if (j === 6) {
+            if (this.pieceSelectionnee.canRoque(this)) {
+              console.log("Petit roque ok");
+              this.deplacerPiece(this.pieceSelectionnee, row, 6);
+              let tour = this.getPosition(row, 7);
+              this.deplacerPiece(tour, row, 5);
+              moveCompleted = true;
+            }
+          }
         }
       }
 
@@ -472,7 +479,8 @@ class Echiquier {
           this.deplacerPiece(this.pieceSelectionnee, oldi, oldj);
         }
       }
-      if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
+
+      else if (piece && this.pieceSelectionnee.canAttack(this, i, j)) {
         this.deplacerPiece(this.pieceSelectionnee, i, j);
 
         if (!this.checkIfKingIsInCheck(monRoi)) {
