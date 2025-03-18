@@ -13,47 +13,18 @@
     <body>
         <!-- Chess -->
         <div class="container">
-            <!-- Title -->
             <div class="title">
                 <h1>Jeu d'échecs</h1>
             </div>
-            <!-- Alert -->
             <div class="messages-bg">
                 <div class="message-player"></div>
                 <div class="remained-pieces"></div>
                 <div class="check"></div>
             </div>
             <div id="echiquier">
-                <!-- Matrix -->
                 <canvas id="myCanvas"></canvas>
             </div>
         </div>
-
-        <script src="model.js" type="text/javascript"></script>
-        <script src="view.js" type="text/javascript"></script>
-
-        <script type="text/javascript">
-
-            const echiquier = new Echiquier();
-            const view = new View(echiquier, document, 65);
-         
-            // Test deplacement 
-            // let roi = echiquier.getPosition(0, 4);
-
-            // for (let i = -1; i <= 8; i++) {
-            //     for (let j = -1; j <= 8; j++) {
-
-            //         if (roi.canAttack(echiquier, i, j)) {
-            //             //console.log(`reine canAttack : `, i, j)
-            //             view.highLightBox(i, j);
-            //         } 
-
-            //     }
-            // }
-    
-        // tour des joueurs 
-        // vue affiche à qui c'est le tour
-     
-        </script>
+        <script type="module" src="./controller.js"></script>
     </body>
 </html>
