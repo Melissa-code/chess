@@ -61,3 +61,17 @@ h1 {
   font-weight: bold;
   margin-bottom: 1rem;
 }
+
+
+/* Mobile */
+
+@media (max-width: 601px) {
+  h1 {
+      font-size: 35px;
+      text-align: center;
+  }
+  .check {
+    margin-bottom: 2rem;
+  }
+}
+
