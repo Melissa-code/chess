@@ -6,7 +6,7 @@ Chess est un jeu d'échecs développé en JavaScript qui permet de jouer contre 
 - **Interface:** Le jeu s'affiche dans un canevas HTML avec des interactions basées sur des événements JavaScript. 
 
 
-♟️Ce jeu est déployé sur Netlify: 🔗[Jouer aux échecs en ligne]()
+♟️Ce jeu est déployé sur Netlify: 🔗[Jouer aux échecs en ligne](https://chess-realm.netlify.app/)
 
 ---
 
