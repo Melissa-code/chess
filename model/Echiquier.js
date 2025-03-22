@@ -145,7 +145,6 @@ class Echiquier {
         ) {
           if (j === 6 || j === 2) {
             if (this.pieceSelectionnee.canRoque(this, row, j)) {
-              console.log("roque ok");
               this.deplacerPiece(this.pieceSelectionnee, row, j);
               let tour = this.getPosition(row, j === 6 ? 7 : 0);
               this.deplacerPiece(tour, row, j === 6 ? 5 : 3);
